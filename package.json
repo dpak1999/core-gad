@@ -1,0 +1,22 @@
+{
+  "name": "core-gad",
+  "version": "1.0.0",
+  "description": "Ecommerce website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpak1999/core-gad.git"
+  },
+  "author": "Deepak Kumar Dash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpak1999/core-gad/issues"
+  },
+  "homepage": "https://github.com/dpak1999/core-gad#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
