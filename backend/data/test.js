@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../actions/userActions";
-import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import FormContainer from "../components/FormContainer";
+import { login } from "../actions/userActions";
 
 const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState("");
@@ -39,17 +39,17 @@ const LoginScreen = ({ location, history }) => {
           <Form.Label>Email Address</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter your email"
+            placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Password Address</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter your password"
+            placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
