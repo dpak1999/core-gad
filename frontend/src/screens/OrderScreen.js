@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import { Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getOrderDetails } from "../actions/orderActions";
@@ -12,6 +12,7 @@ const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
 
   const orderDetails = useSelector((state) => state.orderDetails);
+
   const { order, loading, error } = orderDetails;
 
   useEffect(() => {
