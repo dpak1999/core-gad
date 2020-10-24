@@ -23,7 +23,7 @@ const UserListScreen = ({ history }) => {
     }
 
     dispatch(listUsers());
-  }, [dispatch, history]);
+  }, [dispatch, history, userInfo]);
 
   const deleteHandler = (id) => {
     console.log("deleted");
