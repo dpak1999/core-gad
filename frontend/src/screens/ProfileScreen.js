@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Table, Form, Button, Row, Col } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -25,14 +26,15 @@ const ProfileScreen = ({ location, history }) => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
 
-  const orderMyList = useSelector((state) => state.orderMyList);
-  const { loading: loadingOrders, error: errorOrders, orders } = orderMyList;
+  const orderListMy = useSelector((state) => state.orderListMy);
+  const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user?.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(listMyOrders());
       } else {
@@ -40,11 +42,10 @@ const ProfileScreen = ({ location, history }) => {
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
@@ -57,60 +58,62 @@ const ProfileScreen = ({ location, history }) => {
       <Col md={3}>
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
-        {error && <Message variant="danger">{error}</Message>}
-        {success && (
-          <Message variant="success">Profile updated successfully</Message>
+        {}
+        {success && <Message variant="success">Profile Updated</Message>}
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="name"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="email">
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="confirmPassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Button type="submit" variant="primary">
+              Update
+            </Button>
+          </Form>
         )}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="email">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Button type="submit" variant="primary">
-            Update
-          </Button>
-        </Form>
       </Col>
-
       <Col md={9}>
-        <h2>My orders</h2>
+        <h2>My Orders</h2>
         {loadingOrders ? (
           <Loader />
         ) : errorOrders ? (
@@ -127,7 +130,6 @@ const ProfileScreen = ({ location, history }) => {
                 <th></th>
               </tr>
             </thead>
-
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
