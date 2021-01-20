@@ -1,3 +1,5 @@
+/** @format */
+
 import axios from "axios";
 import {
   USER_DETAILS_FAIL,
@@ -303,4 +305,3 @@ export const updateUser = (user) => async (dispatch, getState) => {
     });
   }
 };
-

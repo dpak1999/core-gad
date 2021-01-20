@@ -1,3 +1,5 @@
+/** @format */
+
 const products = [
   {
     name: "Airpods Wireless Bluetooth Headphones",

@@ -1,3 +1,5 @@
+/** @format */
+
 import axios from "axios";
 import { CART_CLEAR_ITEMS } from "../constants/cartConstants";
 import {
@@ -261,4 +263,3 @@ export const listOrders = () => async (dispatch, getState) => {
     });
   }
 };
-

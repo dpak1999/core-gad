@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
